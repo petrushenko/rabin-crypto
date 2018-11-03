@@ -66,7 +66,7 @@ def file_encrypt(filename, n, b):
     f.close()
     return 0
 
-file_encrypt("test.txt", 39203, 13)
+file_encrypt("test.jpg", 39203, 13)
     
 
 
