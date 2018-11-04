@@ -43,31 +43,30 @@ def chek_input(*, p, q, b, n):
 def file_encrypt(filename, n, b):
     '''
     Шифрование файла открытыми ключами b и n
-    Возвращает 0 при успешном шифровании
+    Возвращает list с шифротекстом при успешном шифровании
     '''
     #const
     buff_size = 0x4000
     
     f_out = open(filename + ".enc", "w")
-
+    out_data = []
     with open(filename, "rb") as f:
         #Бесконечный цикл чтения из файла
         while True: 
             fdata = f.read(buff_size)
-            out_data = []
             if fdata: #шифрование того, что прочитано: 
                 for byte in fdata:
-                    f_out.write(str(((byte * (byte + b)) % n)))
-                #    out_data.append((byte * (byte + b) % n))
-                #f_out.write(out_data)
+                    out_data.append((byte * (byte + b)) % n)
             else: #если ничего не прочитано - выход из цикла
                 break
-    f_out.close()
-    f.close()
-    return 0
+        for item in out_data:
+            f_out.write(str(item) + " ")
+        f.close()
+        f_out.close()
+    return out_data
 
-file_encrypt("test.jpg", 39203, 13)
-    
+encr = file_encrypt("test.txt", 989, 16)
+print(encr)
 
 
 
