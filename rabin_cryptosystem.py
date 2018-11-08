@@ -5,7 +5,21 @@ from math import sqrt
 #const
 buff_size = 0x4000
 
-#def fest_exp():
+def fast_pow(num, power, mod):
+    '''
+    Быстрое возведение в степень
+    Результат по mod
+    '''
+    #result
+    res = 1 
+    # (b ^ k) * p = num ^ power
+    while power > 0:
+        while power % 2 == 0:
+            power /= 2
+            num = (num * num) % mod
+        power -= 1
+        res = (res * num) % mod
+    return res      
 
 
 def is_prime(num):
@@ -77,8 +91,10 @@ def decrypt(c, p, q, b):
     # D - дискриминант
     D = (b ** 2 + 4 * c) % n
     # Нахождение корня квадратного из D (fast EXP)
-    mp = (D ** ((p + 1)//4)) % p 
-    mq = (D ** ((q + 1)//4)) % q
+    #mp_ = (D ** ((p + 1)//4)) % p 
+    #mq_ = (D ** ((q + 1)//4)) % q
+    mp = fast_pow(D, (p + 1) // 4, p)
+    mq = fast_pow(D, (q + 1) // 4, q)
 
     #Расширенный алгоритм евклида
     yp, yq, _gcd = extended_euclid(p, q) #третий возвращаемый параметр не используется
@@ -146,7 +162,7 @@ def file_decrypt(filename, p, q, b):
                     m = decrypt(int(item), p, q, b)
                     for i in range(len(m)):
                         if m[i] <= 255:
-                            out_data.append(m[i])
+                            out_data.append(m[i] % 256)
             else:
                 break
         f.close()
@@ -156,8 +172,11 @@ def file_decrypt(filename, p, q, b):
     return out_data    
 
 
-file_encrypt("test.jpg", 11*31, 173)
-file_decrypt("test.jpg.enc", 11, 31, 173)
+file_encrypt("test.txt", 419 * 9719, 4055709)
+file_decrypt("test.txt.enc", 419, 9719, 4055709)
+
+
+#print(fast_pow(4, 12, 30))
 
 
 
