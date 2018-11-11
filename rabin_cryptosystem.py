@@ -55,7 +55,7 @@ def chek_input(*, p, q, b, n):
     ''' 
     Проверка на корректность введенных ключей
     '''
-    if (p % 4 == 3 and q % 4 == 3 and 0 != b < n and is_prime(p) and is_prime(q) and n > 255):
+    if (p % 4 == 3 and q % 4 == 3 and 0 < b < n and is_prime(p) and is_prime(q) and n > 255):
         return True
     return False
 
@@ -148,6 +148,8 @@ def file_decrypt(filename, p, q, b):
     f_expansion = f_split[len(f_split) - 1] # финт ушами: f_expansion = f_split[-1]
     if f_expansion == "enc":
         filename_out = filename.replace(f_expansion, "dec") 
+    else:
+        filename_out = filename + ".dec"
     
     f_out = open(filename_out, "wb")
     out_data = bytearray([])
@@ -159,24 +161,61 @@ def file_decrypt(filename, p, q, b):
             if fdata_str:
                 fdata = fdata_str.split(" ") #получение значений шифротекста из файла
                 for item in fdata:
+                    if not is_number(item):
+                        return []
                     m = decrypt(int(item), p, q, b)
                     for i in range(len(m)):
                         if m[i] <= 255:
-                            out_data.append(m[i] % 256)
+                            out_data.append(m[i])
             else:
                 break
         f.close()
 
     f_out.write(out_data)
     f_out.close()
-    return out_data    
+    return out_data  
 
+def get_byte_from_file(filename):
 
-file_encrypt("test.txt", 419 * 9719, 4055709)
-file_decrypt("test.txt.enc", 419, 9719, 4055709)
+    with open(filename, "rb") as f:
+        while True:
+            fdata = f.read(buff_size)
+            if fdata:
+                for item in fdata:
+                    yield item
+            else:
+                break
+        f.close()
 
+def get_num_from_file(filename):
 
-#print(fast_pow(4, 12, 30))
+    with open(filename, "r") as f:
+        while True:
+            fdata_str = f.read(buff_size)
+            fdata_str = fdata_str.strip()
+            if fdata_str:
+                fdata = fdata_str.split(" ")
+                for item in fdata:
+                    yield item
+            else:
+                break
+        f.close()   
+
+def is_number(num):
+    '''
+    Проверяет является ли строка числом
+    '''      
+    #доступные символы
+    symb = [str(i) for i in range(10)]
+    if num.strip() == '':
+        return False
+    for dig in num:
+        if dig not in symb:
+            return False
+    return True   
+            
+                
+                
 
 
 

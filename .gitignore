@@ -1,4 +1,8 @@
 test.txt
 test.txt.dec
 test.txt.enc
+utest.txt
+utest.txt.dec
+utest.txt.enc
 /.vscode
+/__pycache__
