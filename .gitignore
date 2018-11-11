@@ -6,3 +6,4 @@ utest.txt.dec
 utest.txt.enc
 /.vscode
 /__pycache__
+/tests

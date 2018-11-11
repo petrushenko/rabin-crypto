@@ -145,6 +145,12 @@ def decryption_frame():
     textbox.insert(1.0, "Decyphered file(20 symb):\n") 
     textbox.configure(state=DISABLED)
     textbox_pl.configure(state=DISABLED)
+    scroll = Scrollbar(textbox, command=textbox.yview)
+    textbox["yscrollcommand"] = scroll.set
+    scroll.pack(side="right", fill="y")
+    scroll_pl = Scrollbar(textbox_pl, command=textbox_pl.yview)
+    textbox["yscrollcommand"] = scroll_pl.set
+    scroll_pl.pack(side="right", fill="y")
 
     #Entry
     p_enter = Entry(fr_decrypt, font="Tahoma")
@@ -181,11 +187,15 @@ def encryption_frame():
         '''
         Если введено невалидное значение, возвращает 0
         '''
-        n = n.get()
-        if is_number(n):
-            n = int(n)
-        else:
-            n = 0
+        str_n = n.get()
+        li_n = str_n.split("*")
+        n = 1
+        for num in li_n:
+            num = num.strip()
+            if is_number(num):
+                n *= int(num)
+            else:
+                n = 0
 
         b = b.get()
         if is_number(b):
@@ -249,13 +259,16 @@ def encryption_frame():
                    state=NORMAL)
     textbox_pl.place(height=win_height//2, width=win_width//2)
     textbox.place(rely=.5,height=win_height//2, width=win_width//2)
-    textbox_pl.insert(1.0, "Plain file(20 symb):")
+    textbox_pl.insert(1.0, "Plain file(20 symb):") #Textbox PLain text
     textbox.insert(1.0, "Ciphered file(20 symb):") 
     textbox.configure(state=DISABLED)
     textbox_pl.configure(state=DISABLED)   
-    #scroll = Scrollbar(fr_out, command=textbox.yview)
-    #textbox["yscrollcommand"] = scroll.set
-    #scroll.pack(side="right", fill="y")
+    scroll = Scrollbar(textbox, command=textbox.yview)
+    textbox["yscrollcommand"] = scroll.set
+    scroll.pack(side="right", fill="y")
+    scroll_pl = Scrollbar(textbox_pl, command=textbox_pl.yview)
+    textbox["yscrollcommand"] = scroll_pl.set
+    scroll_pl.pack(side="right", fill="y")
 
     #Entry
     n_enter = Entry(fr_encrypt, font="Tahoma")
