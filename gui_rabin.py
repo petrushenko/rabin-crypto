@@ -1,5 +1,5 @@
 from tkinter import *
-from rabin_cryptosystem import is_number, get_num_from_file, chek_input, file_encrypt, file_decrypt, get_byte_from_file
+from src.rabin_cryptosystem import is_number, get_num_from_file, chek_input, file_encrypt, file_decrypt, get_byte_from_file
 
 #const
 btn_width = 100 
