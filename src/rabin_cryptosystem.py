@@ -212,25 +212,4 @@ def is_number(num):
     for dig in num:
         if dig not in symb:
             return False
-    return True   
-            
-                
-                
-
-
-
-    
-    
-
-
-
-
-
-
-
-
-
-
-    
-            
-    
+    return True       

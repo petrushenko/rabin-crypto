@@ -1,5 +1,5 @@
 from tkinter import *
-from src.rabin_cryptosystem import is_number, get_num_from_file, chek_input, file_encrypt, file_decrypt, get_byte_from_file
+from src.rabin_cryptosystem import is_prime, is_number, get_num_from_file, chek_input, file_encrypt, file_decrypt, get_byte_from_file
 
 #const
 btn_width = 100 
@@ -82,7 +82,7 @@ def decryption_frame():
 
     def decrypt():
         #const
-        count_to_out = 20
+        count_to_out = 40
 
         p, q, b, n = get_dec_values(p_enter, q_enter, b_enter)
 
@@ -193,7 +193,10 @@ def encryption_frame():
         for num in li_n:
             num = num.strip()
             if is_number(num):
-                n *= int(num)
+                if is_prime(int(num)) and (int(num) % 4 == 3):
+                    n *= int(num)
+                else:
+                    n = 0
             else:
                 n = 0
 
@@ -207,7 +210,7 @@ def encryption_frame():
                        
     def encrypt():
         #const
-        count_to_out = 20
+        count_to_out = 40
 
         n, b  = get_enc_values(n_enter, b_enter)
         #if chek_input(p=p, q=q, b=b, n=n):
@@ -216,21 +219,24 @@ def encryption_frame():
             filename = open_file()
             if filename:
                 cyphertext = file_encrypt(filename, n, b)
-                i = 0
-                by = get_byte_from_file(filename)
-                #Разрешить ввод:
-                textbox.configure(state=NORMAL)
-                textbox_pl.configure(state=NORMAL)
-                textbox.delete(1.0, END)
-                textbox_pl.delete(1.0, END)
-                textbox_pl.insert(1.0, "Plain file(20 symb):\n")
-                textbox.insert(1.0, "Ciphered file(20 symb):\n") 
-                while (i <= count_to_out) and (i < len(cyphertext)):
-                    textbox.insert(END, str(cyphertext[i])+" ")
-                    textbox_pl.insert(END, str(next(by))+" ")
-                    i += 1
-                textbox.configure(state=DISABLED)
-                textbox_pl.configure(state=DISABLED)
+                if (cyphertext):
+                    i = 0
+                    by = get_byte_from_file(filename)
+                    #Разрешить ввод:
+                    textbox.configure(state=NORMAL)
+                    textbox_pl.configure(state=NORMAL)
+                    textbox.delete(1.0, END)
+                    textbox_pl.delete(1.0, END)
+                    textbox_pl.insert(1.0, "Plain file(20 symb):\n")
+                    textbox.insert(1.0, "Ciphered file(20 symb):\n") 
+                    while (i <= count_to_out) and (i < len(cyphertext)):
+                        textbox.insert(END, str(cyphertext[i])+" ")
+                        textbox_pl.insert(END, str(next(by))+" ")
+                        i += 1
+                    textbox.configure(state=DISABLED)
+                    textbox_pl.configure(state=DISABLED)
+                else:
+                    show_error(dec_er)
             else:
                 show_error(no_file)
         else:
